@@ -1,35 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
+import { useState } from 'react';
+import './App.css';
+import useBalance from './hooks/GetBalance';
+import useLastBlock from './hooks/GetLastBlock';
 function App() {
-  const [count, setCount] = useState(0)
-
+  const { loading, lastBlock, getLastBlockChain } = useLastBlock();
+  const { getBalance, loadingBalance, balance } = useBalance();
+  const [ address, setAddress ] = useState('');
+  const handleLastBlockChain = async () => {
+    await getLastBlockChain();
+    console.log(lastBlock);
+  }
+  const handlebalance = async () => {
+    console.log(address);
+    if(address){
+      await getBalance(address);
+    }
+    else{
+      alert("please insert the address ")
+    }
+  }
   return (
-    <>
+    <div className="App">
+      <div className="Eth">
+        Ethereum API
+      </div>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button onClick={handleLastBlockChain} className="lastChainContainer">
+          Shows the last block number of Ethereum mainnet
         </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+        {!loading && lastBlock&&<p style={{width:"100%", marginTop:"10px", textAlign:'center'}}>
+          The last Block Chain <span style={{color:'cornflowerblue'}}>{lastBlock}</span>
+        </p>}
+        {loading && <p style={{width:"100%", marginTop:"10px", textAlign:'center',color:'cornflowerblue'}}>
+          Loading ...
+        </p>}
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      <div className='divider'></div>
+      <div className="balance">
+        <p>Insert the address to show balance</p>
+        <input className='input_balance' type='text'  value={address} onChange={(e) => setAddress(e.target.value)}/>
+        <button onClick={handlebalance} className="lastChainContainer">
+          The USDT balance of the provided address
+        </button>
+        {!loadingBalance && balance&&<p style={{width:"100%", marginTop:"10px", textAlign:'center'}}>
+          The Balance <span style={{color:'cornflowerblue'}}>{balance}</span>
+        </p>}
+        {loadingBalance && <p style={{width:"100%", marginTop:"10px", textAlign:'center',color:'cornflowerblue'}}>
+          Loading ...
+        </p>}
+      </div>
+    </div>
+  );
 }
-
-export default App
+export default App;
