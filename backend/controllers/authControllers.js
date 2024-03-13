@@ -42,10 +42,15 @@ export const balance = async (req,res) => {
   const usdtContract = new web3.eth.Contract(USDTContractABI, USDTContractAddress);
   try{
     const { address } = req.body;
-    console.log(address);
-    const balance = await usdtContract.methods.balanceOf(address).call();
+    let balance = null;
+    if(address.includes('https://etherscan.io/token/')){
+      console.log('splited');
+      balance = await usdtContract.methods.balanceOf(address.split('https://etherscan.io/token/')[1]).call();
+    }
+    else{
+      balance = await usdtContract.methods.balanceOf(address).call();
+    }
     console.log('The balnce is :', balance);
-    // res.send(`${address} have that balance ${balance}`);
     res.status(201).json(Number(balance));
   }
   catch(err){
