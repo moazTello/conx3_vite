@@ -6,9 +6,6 @@ import cookieParser from "cookie-parser";
 import http from 'http';
 import cors from 'cors';
 
-
-
-
 const __dirname = path.resolve();
 dotenv.config();
 
