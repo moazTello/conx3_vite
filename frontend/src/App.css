@@ -33,6 +33,7 @@
   align-items: center;
   justify-content: space-between;
   height: 150px;
+  width:100%;
 }
 .input_balance{
   outline: none;
@@ -41,7 +42,7 @@
   padding: 8px;
   color: rgb(81, 168, 200);
   border: 0.5px solid cornflowerblue;
-  min-width: fit-content;
+  min-width: 70%;
 }
 .divider{
   width: 100%;
